@@ -3,7 +3,13 @@ import { Component } from "react";
 export default class Registration extends Component {
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+            error: false,
+            firstname: "",
+            lastname: "",
+            email: "",
+            password: "",
+        };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -18,6 +24,10 @@ export default class Registration extends Component {
     }
 
     handleSubmit(e) {
+        if (!this.state) {
+            console.log("NOOOO");
+            this.setState({ error: true });
+        }
         e.preventDefault();
         console.log("user try to submit");
         fetch("/register", {
@@ -32,17 +42,19 @@ export default class Registration extends Component {
                 if (result.success) {
                     window.location.reload();
                 } else {
-                    location.replace("/");
+                    this.setState({ error: true });
                 }
             })
             .catch((err) => console.log(err));
     }
     render() {
         return (
-            <>
-                <h1>Join our community</h1>
+            <section id="registration">
+                <h2>Sign Up</h2>
+                <p> It is free and always will be</p>
+
                 {this.state.error && <p>Oops, you have a problem</p>}
-                <form id="registration" onSubmit={this.handleSubmit}>
+                <form id="regform" onSubmit={this.handleSubmit}>
                     <input
                         onChange={this.handleChange}
                         type="text"
@@ -70,7 +82,10 @@ export default class Registration extends Component {
 
                     <button>Submit</button>
                 </form>
-            </>
+                <h4 id="moto">
+                    Connect with fishes and the world around you on Fishbook.
+                </h4>
+            </section>
         );
     }
 }
