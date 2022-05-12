@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
-import App from "./app";
+// import App from "./app";
 
 export class Login extends Component {
     constructor() {

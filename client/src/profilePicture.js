@@ -4,8 +4,7 @@ export default function ProfilePicture(props) {
         return (
             <img
                 src="/avatar.jpeg"
-                height="50px"
-                width="50px"
+                className={`profile-pic ${props.type}`}
                 onClick={props.onImgClick}
             />
         );
@@ -14,9 +13,9 @@ export default function ProfilePicture(props) {
         <img
             src={props.profile_picture_url}
             onClick={props.onImgClick}
+            className ={`profile-pic ${props.type}`}
             placeholder="Profilpic"
-            height="50px"
-            width="50px"
+        
         />
     );
 }

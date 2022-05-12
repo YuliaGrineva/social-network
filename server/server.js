@@ -73,6 +73,24 @@ app.post(
     }
 );
 
+app.post("/api/users/bio", (req, res) => {
+    const { bio } = req.body;
+    const { userId } = req.session;
+    // if (req.bio) {
+    //     console.log("REQUESTED bio: ", bio);
+    db.updateUserBio(bio, userId).then((results) => {
+        // console.log("results of upload bio: ", results);
+
+        res.json(results.rows[0]);
+    });
+    //         .catch((e) => console.log("error uploading bio: ", e));
+    // } else {
+    //     res.json({
+    //         succes: false,
+    //     });
+    // }
+});
+
 app.post("/register", (req, res) => {
     console.log("POST request made to /register route");
     const { firstname, lastname, email, password } = req.body;
@@ -134,6 +152,12 @@ app.post("/login", (req, res) => {
 // });
 
 // app.put("/api/password", (req, res) => {});
+
+app.post("/logout", function (req, res) {
+    // res.render("login");
+    console.log("LOGGING OUT USER");
+    req.session = null;
+});
 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));

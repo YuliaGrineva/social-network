@@ -1,7 +1,7 @@
 import { Component } from "react";
 import ProfilePicture from "./profilePicture";
 import UploadPictureModal from "./uploadPictureModal";
-// import Profile
+import Profile from "./profile";
 
 export default class App extends Component {
     constructor(props) {
@@ -9,6 +9,7 @@ export default class App extends Component {
         this.state = {
             firstname: "",
             lastname: "",
+            bio: "",
             profile_picture_url: "",
             showModal: false,
         };
@@ -16,6 +17,7 @@ export default class App extends Component {
         this.closeModal = this.closeModal.bind(this);
         this.onUpload = this.onUpload.bind(this);
         this.handlePicChange = this.handlePicChange.bind(this);
+        this.onBioUpdate = this.onBioUpdate.bind(this);
     }
     componentDidMount() {
         fetch("/api/users/me")
@@ -41,6 +43,13 @@ export default class App extends Component {
             profile_picture_url: new_profile_url,
         });
     }
+
+    onBioUpdate(newBio) {
+        console.log("New Bio Updated", newBio);
+        this.setState({ bio: newBio });
+        console.log(" Updated STATE", this.state.bio);
+    }
+
     handlePicChange(e) {
         this.setState({
             picFile: e.target.value,
@@ -56,21 +65,33 @@ export default class App extends Component {
                         <ProfilePicture
                             profile_picture_url={this.state.profile_picture_url}
                             onImgClick={this.onProfileClick}
+                            type={"header"}
                         />
                     </header>
                     <main className="container">
-                        <h1>
-                            Welcome back {this.state.firstname}{" "}
-                            {this.state.lastname}
-                        </h1>
+                        <h2>
+                            Welcome {this.state.firstname} {this.state.lastname}
+                            !
+                        </h2>
                     </main>
-                    <footer>Bul bul</footer>
+                    <footer> &#9875; Bul-bul 2022</footer>
                     {this.state.showModal && (
                         <UploadPictureModal
                             closeModal={this.closeModal}
                             onUpload={this.onUpload}
                         />
                     )}
+                    <Profile
+                        firstname={this.state.firstname}
+                        lastname={this.state.lastname}
+                        bio={this.state.bio}
+                        profile_picture_url={this.state.profile_picture_url}
+                        onUpload={this.onUpload}
+                        closeModal={this.closeModal}
+                        onProfileClick={this.onProfileClick}
+                        showModal={this.showModal}
+                        onBioUpdate={this.onBioUpdate}
+                    />
                 </div>
             )
         );

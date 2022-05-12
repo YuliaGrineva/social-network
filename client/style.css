@@ -85,3 +85,41 @@ input {
 #moto {
     margin-top: 200px;
 }
+img.profile-pic.header {
+    height: 50px;
+    width:50px;
+    object-fit: contain;
+        float: right;
+
+}
+img.profile-pic.main {
+ height: 300px;
+    width:300px;
+    object-fit: contain;
+}
+
+footer {
+        position: absolute;
+    bottom: 5px;
+    right: 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#profile {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#profileName{
+font-size: 28px;
+padding: 10px;
+margin: 10px;
+}
+
+#showBio {
+    padding: 10px;
+    margin: 10px;
+}
