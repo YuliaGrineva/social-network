@@ -95,3 +95,27 @@ module.exports.updateUserBio = (bio, id) => {
     const params = [bio, id];
     return db.query(query, params);
 };
+
+
+
+
+module.exports.mostRecent = (id) => {
+    const query = `
+        SELECT firstname, lastname ,profile_picture_url, id FROM users
+
+        ORDER BY id DESC 
+        LIMIT 3;
+    `;
+
+    return db.query(query);
+};
+
+module.exports.matchingUsers = (val) => {
+    const query = `
+        SELECT firstname, lastname ,profile_picture_url, id
+        FROM users
+        WHERE firstname ILIKE $1;
+    `;
+    const params = [val + "%"];
+    return db.query(query, params);
+};

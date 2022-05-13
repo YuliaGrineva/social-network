@@ -2,6 +2,9 @@ import { Component } from "react";
 import ProfilePicture from "./profilePicture";
 import UploadPictureModal from "./uploadPictureModal";
 import Profile from "./profile";
+import {FindPeople} from "./findPeople";
+import { Link } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 
 export default class App extends Component {
     constructor(props) {
@@ -59,40 +62,55 @@ export default class App extends Component {
         return (
             console.log("Hello World", this.state),
             (
-                <div className="app">
-                    <header>
-                        <nav>Home</nav>
-                        <ProfilePicture
+                <BrowserRouter>
+                    <div className="app">
+                        <header>
+                            <nav>Home</nav>
+                            <ProfilePicture
+                                profile_picture_url={
+                                    this.state.profile_picture_url
+                                }
+                                onImgClick={this.onProfileClick}
+                                type={"header"}
+                            />
+                            <Route>
+                                <FindPeople
+                                    path="/findPeople"
+                                    firstname={this.state.firstname}
+                                    lastname={this.state.lastname}
+                                    profile_picture_url={
+                                        this.state.profile_picture_url
+                                    }
+                                    id={this.state.id}
+                                />
+                            </Route>
+                        </header>
+                        <main className="container">
+                            <h2>
+                                Welcome {this.state.firstname}{" "}
+                                {this.state.lastname}!
+                            </h2>
+                        </main>
+                        <footer> &#9875; Bul-bul 2022</footer>
+                        {this.state.showModal && (
+                            <UploadPictureModal
+                                closeModal={this.closeModal}
+                                onUpload={this.onUpload}
+                            />
+                        )}
+                        <Profile
+                            firstname={this.state.firstname}
+                            lastname={this.state.lastname}
+                            bio={this.state.bio}
                             profile_picture_url={this.state.profile_picture_url}
-                            onImgClick={this.onProfileClick}
-                            type={"header"}
-                        />
-                    </header>
-                    <main className="container">
-                        <h2>
-                            Welcome {this.state.firstname} {this.state.lastname}
-                            !
-                        </h2>
-                    </main>
-                    <footer> &#9875; Bul-bul 2022</footer>
-                    {this.state.showModal && (
-                        <UploadPictureModal
-                            closeModal={this.closeModal}
                             onUpload={this.onUpload}
+                            closeModal={this.closeModal}
+                            onProfileClick={this.onProfileClick}
+                            showModal={this.showModal}
+                            onBioUpdate={this.onBioUpdate}
                         />
-                    )}
-                    <Profile
-                        firstname={this.state.firstname}
-                        lastname={this.state.lastname}
-                        bio={this.state.bio}
-                        profile_picture_url={this.state.profile_picture_url}
-                        onUpload={this.onUpload}
-                        closeModal={this.closeModal}
-                        onProfileClick={this.onProfileClick}
-                        showModal={this.showModal}
-                        onBioUpdate={this.onBioUpdate}
-                    />
-                </div>
+                    </div>
+                </BrowserRouter>
             )
         );
     }

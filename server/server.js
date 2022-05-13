@@ -49,6 +49,31 @@ app.get("/api/users/me", (req, res) => {
     });
 });
 
+app.get("/api/findusers/:search", (req, res) => {
+    console.log("req params", req.params);
+    const { search } = req.params;
+    console.log("val", search);
+    db.matchingUsers(search )
+        .then((results) => {
+            console.log("results of matchingUsers!!!!!: ", results);
+
+            res.json(results.rows);
+        })
+        .catch((e) => console.log("error uploading!!!: ", e));
+});
+
+app.get("/api/recentUsers", (req, res) => {
+    console.log("no searcH");
+    const sessionId = req.session.userId;
+    db.mostRecent(sessionId)
+        .then((results) => {
+            console.log("results of mostRedent: ", results);
+
+            res.json(results.rows);
+        })
+        .catch((e) => console.log("error uploading: ", e));
+});
+
 app.post(
     "/user/profile/picture",
     uploader.single("image"),
