@@ -2,9 +2,10 @@ import { Component } from "react";
 import ProfilePicture from "./profilePicture";
 import UploadPictureModal from "./uploadPictureModal";
 import Profile from "./profile";
-import {FindPeople} from "./findPeople";
+import { FindPeople } from "./findPeople";
 import { Link } from "react-router-dom";
 import { BrowserRouter, Route } from "react-router-dom";
+import OtherProfile from "./otherProfile";
 
 export default class App extends Component {
     constructor(props) {
@@ -58,6 +59,17 @@ export default class App extends Component {
             picFile: e.target.value,
         });
     }
+
+    logout(e) {
+        e.preventDefault();
+        fetch("/logout")
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    return location.replace("/");
+                }
+            });
+    }
     render() {
         return (
             console.log("Hello World", this.state),
@@ -73,7 +85,18 @@ export default class App extends Component {
                                 onImgClick={this.onProfileClick}
                                 type={"header"}
                             />
-                            <Route>
+                        </header>
+
+                        <button id="loginButton" onClick={this.logout}>
+                            Log out!
+                        </button>
+
+                        <main className="container">
+                            <h2>
+                                Welcome {this.state.firstname}{" "}
+                                {this.state.lastname}!
+                            </h2>
+                            <Route path="/findPeople">
                                 <FindPeople
                                     path="/findPeople"
                                     firstname={this.state.firstname}
@@ -84,12 +107,24 @@ export default class App extends Component {
                                     id={this.state.id}
                                 />
                             </Route>
-                        </header>
-                        <main className="container">
-                            <h2>
-                                Welcome {this.state.firstname}{" "}
-                                {this.state.lastname}!
-                            </h2>
+                            <Route path="/" exact>
+                                <Profile
+                                    firstname={this.state.firstname}
+                                    lastname={this.state.lastname}
+                                    bio={this.state.bio}
+                                    profile_picture_url={
+                                        this.state.profile_picture_url
+                                    }
+                                    onUpload={this.onUpload}
+                                    closeModal={this.closeModal}
+                                    onProfileClick={this.onProfileClick}
+                                    showModal={this.showModal}
+                                    onBioUpdate={this.onBioUpdate}
+                                />
+                            </Route>
+                            <Route path="/user/:otherUserId">
+                                <OtherProfile />
+                            </Route>
                         </main>
                         <footer> &#9875; Bul-bul 2022</footer>
                         {this.state.showModal && (
@@ -98,17 +133,6 @@ export default class App extends Component {
                                 onUpload={this.onUpload}
                             />
                         )}
-                        <Profile
-                            firstname={this.state.firstname}
-                            lastname={this.state.lastname}
-                            bio={this.state.bio}
-                            profile_picture_url={this.state.profile_picture_url}
-                            onUpload={this.onUpload}
-                            closeModal={this.closeModal}
-                            onProfileClick={this.onProfileClick}
-                            showModal={this.showModal}
-                            onBioUpdate={this.onBioUpdate}
-                        />
                     </div>
                 </BrowserRouter>
             )

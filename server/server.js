@@ -53,7 +53,7 @@ app.get("/api/findusers/:search", (req, res) => {
     console.log("req params", req.params);
     const { search } = req.params;
     console.log("val", search);
-    db.matchingUsers(search )
+    db.matchingUsers(search)
         .then((results) => {
             console.log("results of matchingUsers!!!!!: ", results);
 
@@ -70,6 +70,18 @@ app.get("/api/recentUsers", (req, res) => {
             console.log("results of mostRedent: ", results);
 
             res.json(results.rows);
+        })
+        .catch((e) => console.log("error uploading: ", e));
+});
+
+app.get("/api/users/:otherUserId", (req, res) => {
+    console.log("no searH");
+    const otherUserId = req.params.otherUserId;
+    db.getUserById(otherUserId)
+        .then((results) => {
+            console.log("results of: ", results);
+
+            res.json(results.rows[0]);
         })
         .catch((e) => console.log("error uploading: ", e));
 });
@@ -97,6 +109,13 @@ app.post(
         }
     }
 );
+
+app.get("/logout", (req, res) => {
+    // console.log("HERREEE", req.session.users.id);
+    req.session.userId = null;
+    res.json({ success: true });
+    return;
+});
 
 app.post("/api/users/bio", (req, res) => {
     const { bio } = req.body;

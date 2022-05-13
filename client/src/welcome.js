@@ -3,6 +3,7 @@ import Registration from "./registration";
 import { BrowserRouter, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {FindPeople} from "./findPeople";
+import OtherProfile from "./otherProfile";
 // import { ResetPassword } from "./resetPassword";
 
 export default function Welcome() {
@@ -22,9 +23,8 @@ export default function Welcome() {
                 <Route path="/login">
                     <Login />
                 </Route>
-                <Route exact path="/findpeople">
-                    <FindPeople />
-                </Route>
+
+             
                 {/* <Route path="/reset-password">
                     import FindPeople from "./findPeople";
                 </Route> */}
