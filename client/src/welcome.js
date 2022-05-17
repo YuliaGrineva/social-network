@@ -12,7 +12,10 @@ export default function Welcome() {
             <h1>fishbook!</h1>
             <img className="fish" src="/fish.png" />
             <img className="fish2" src="/fish.png" />
-
+            <img className="bubble" src="/bub.png" />
+            <img className="bubble2" src="/bub.png" />
+            <img className="bubble3" src="/bub.png" />
+            
             <BrowserRouter>
                 <Route id="regrouter" exact path="/">
                     <Registration />
@@ -24,7 +27,6 @@ export default function Welcome() {
                     <Login />
                 </Route>
 
-             
                 {/* <Route path="/reset-password">
                     import FindPeople from "./findPeople";
                 </Route> */}

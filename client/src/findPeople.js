@@ -32,7 +32,7 @@ export function FindPeople() {
 
     return (
         <section id="findPage">
-            <h2>Find your fish!</h2>
+            <h2>Catch your fish!</h2>
             <h3>Check out who just dived</h3>
             {users &&
                 users.map((user) => (
@@ -40,7 +40,11 @@ export function FindPeople() {
                         <Link to={`/user/${user.id}`}>
                             <img
                                 id="justDivedImg"
-                                src={user.profile_picture_url}
+                                src={
+                                    user.profile_picture_url
+                                        ? user.profile_picture_url
+                                        : "/icon.jpeg"
+                                }
                             />
                         </Link>
                         <h4>

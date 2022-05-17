@@ -27,9 +27,9 @@ export default class App extends Component {
         fetch("/api/users/me")
             .then((res) => res.json())
             .then((data) => {
-                console.log("22", data.rows[0]);
+                
                 this.setState(data.rows[0]);
-                console.log("333", this.state);
+                
             });
     }
     onProfileClick() {
@@ -49,9 +49,9 @@ export default class App extends Component {
     }
 
     onBioUpdate(newBio) {
-        console.log("New Bio Updated", newBio);
+       
         this.setState({ bio: newBio });
-        console.log(" Updated STATE", this.state.bio);
+       
     }
 
     handlePicChange(e) {
@@ -77,7 +77,17 @@ export default class App extends Component {
                 <BrowserRouter>
                     <div className="app">
                         <header>
-                            <nav>Home</nav>
+                            <nav>
+                                <Link to="/">
+                                    <img src="/logo1.png" id="logo1"></img>
+                                </Link>
+                            </nav>
+
+                            <h2>
+                                Welcome {this.state.firstname}{" "}
+                                {this.state.lastname}!
+                            </h2>
+
                             <ProfilePicture
                                 profile_picture_url={
                                     this.state.profile_picture_url
@@ -86,16 +96,17 @@ export default class App extends Component {
                                 type={"header"}
                             />
                         </header>
-
-                        <button id="loginButton" onClick={this.logout}>
-                            Log out!
-                        </button>
-
+                        <div id="buttons">
+                            <Link to="/findPeople">
+                                <button id="logoutButton">
+                                    Find you fish!
+                                </button>
+                            </Link>
+                            <button id="logoutButton" onClick={this.logout}>
+                                Log out!
+                            </button>
+                        </div>
                         <main className="container">
-                            <h2>
-                                Welcome {this.state.firstname}{" "}
-                                {this.state.lastname}!
-                            </h2>
                             <Route path="/findPeople">
                                 <FindPeople
                                     path="/findPeople"

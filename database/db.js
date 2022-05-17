@@ -96,9 +96,6 @@ module.exports.updateUserBio = (bio, id) => {
     return db.query(query, params);
 };
 
-
-
-
 module.exports.mostRecent = (id) => {
     const query = `
         SELECT firstname, lastname ,profile_picture_url, id FROM users
@@ -118,4 +115,72 @@ module.exports.matchingUsers = (val) => {
     `;
     const params = [val + "%"];
     return db.query(query, params);
+};
+
+module.exports.getFriendshipStatus = async (recipient_id, sender_id) => {
+    console.log("HEREEE", recipient_id, sender_id);
+    const query = `
+       SELECT * FROM friendships
+  WHERE (recipient_id = $1 AND sender_id = $2)
+  OR (recipient_id = $2 AND sender_id = $1);
+    `;
+    const params = [recipient_id, sender_id];
+    const status = await db.query(query, params);
+    console.log("status", status);
+    return status.rows[0];
+};
+
+module.exports.requestFriend = (recipient_id, sender_id) => {
+    console.log("HEREEE", recipient_id, sender_id);
+    const query = `
+       INSERT INTO friendships
+       (recipient_id, sender_id)
+  VALUES($1, $2)
+  RETURNING *
+    `;
+    const params = [recipient_id, sender_id];
+    const request = db.query(query, params);
+
+    return request.rows[0];
+};
+
+module.exports.updateFriend = async (recipient_id, sender_id) => {
+    const query = `
+       UPDATE friendships
+       SET accepted = TRUE
+       WHERE (recipient_id = $1 AND sender_id = $2)
+                    OR
+                    (recipient_id =$2 AND sender_id =$1)
+    `;
+    const params = [recipient_id, sender_id];
+    const update = await db.query(query, params);
+
+    return update.rows[0];
+};
+
+module.exports.deleteFriend = async (recipient_id, sender_id) => {
+    const query = `
+       DELETE FROM friendships
+       WHERE (recipient_id = $1 AND sender_id = $2)
+                    OR
+                    (recipient_id =$2 AND sender_id =$1)
+    `;
+    const params = [recipient_id, sender_id];
+    const deleted = await db.query(query, params);
+
+    return deleted.rows[0];
+};
+
+module.exports.cancelRequest = async (recipient_id, sender_id) => {
+    const query = `
+       DELETE from friendships
+       WHERE (recipient_id = $1 AND sender_id = $2)
+                    OR
+                    (recipient_id =$2 AND sender_id =$1)
+                    RETURNING *
+    `;
+    const params = [recipient_id, sender_id];
+    const cancel = await db.query(query, params);
+
+    return cancel.rows[0];
 };

@@ -106,49 +106,43 @@ app.post("/friendships", (req, res) => {
     const sender_id = req.session.userId;
     const recipient_id = req.body.otherUserId;
     const btnText = req.body.btnText;
-    console.log(
-        "sender_id, recipient_id, btnText ",
-        sender_id,
-        recipient_id,
-        btnText
-    );
 
     if (btnText === "Make Request") {
         db.requestFriend(recipient_id, sender_id)
-            .then((rows) => {
-                console.log("results of request friend: ", rows);
+            .then((results) => {
+                console.log("results of request friend: ", results);
 
-                res.json(rows);
+                res.json(results); 
             })
             .catch((e) => console.log("error request friend: ", e));
     }
 
     if (btnText === "Accept Request") {
         db.updateFriend(recipient_id, sender_id)
-            .then((rows) => {
-                console.log("results of accept friend: ", rows);
+            .then((results) => {
+                console.log("results of accept friend: ", results);
 
-                res.json(rows);
+                res.json(results); 
             })
             .catch((e) => console.log("error accept friend: ", e));
     }
 
     if (btnText === "Cancel Request") {
         db.cancelRequest(recipient_id, sender_id)
-            .then((rows) => {
-                console.log("results of cancelRequest: ", rows);
+            .then((results) => {
+                console.log("results of cancelRequest: ", results);
 
-                res.json(rows);
+                res.json(results); 
             })
             .catch((e) => console.log("error cancelRequest ", e));
     }
 
     if (btnText === "Unfriend") {
         db.deleteFriend(recipient_id, sender_id)
-            .then((rows) => {
-                console.log("results of deleteFriend friend: ", rows);
+            .then((results) => {
+                console.log("results of deleteFriend friend: ", results);
 
-                res.json(rows);
+                res.json(results); 
             })
             .catch((e) => console.log("error deleteFriend: ", e));
     }

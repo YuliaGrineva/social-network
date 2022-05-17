@@ -60,11 +60,11 @@ export default class BioEditor extends Component {
             );
         } else  {
             return (
-                <>
+                <div id="editor">
 
-                    <p className="ppp">{this.props.bio}</p>
+                    <p id="ppp">{this.props.bio}</p>
                     <button onClick={this.showEditor}>Edit</button>
-                </>
+                </div>
             );
         }
     }

@@ -44,7 +44,7 @@ export class Login extends Component {
                         error: true,
                     });
                 } else {
-                    location.reload();
+                    location.replace("/");
                 }
             })
             .catch((err) => {

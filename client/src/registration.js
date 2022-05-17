@@ -25,11 +25,11 @@ export default class Registration extends Component {
 
     handleSubmit(e) {
         if (!this.state) {
-            console.log("NOOOO");
+           
             this.setState({ error: true });
         }
         e.preventDefault();
-        console.log("user try to submit");
+       
         fetch("/register", {
             method: "POST",
             headers: {
