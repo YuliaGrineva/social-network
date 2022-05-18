@@ -6,6 +6,8 @@ import { FindPeople } from "./findPeople";
 import { Link } from "react-router-dom";
 import { BrowserRouter, Route } from "react-router-dom";
 import OtherProfile from "./otherProfile";
+import ResetPassword from "./resetPassword";
+import Friends from "./friends";
 
 export default class App extends Component {
     constructor(props) {
@@ -27,9 +29,7 @@ export default class App extends Component {
         fetch("/api/users/me")
             .then((res) => res.json())
             .then((data) => {
-                
                 this.setState(data.rows[0]);
-                
             });
     }
     onProfileClick() {
@@ -49,9 +49,7 @@ export default class App extends Component {
     }
 
     onBioUpdate(newBio) {
-       
         this.setState({ bio: newBio });
-       
     }
 
     handlePicChange(e) {
@@ -102,6 +100,9 @@ export default class App extends Component {
                                     Find you fish!
                                 </button>
                             </Link>
+                            <Link to="/friends">
+                                <button id="logoutButton">Friends</button>
+                            </Link>
                             <button id="logoutButton" onClick={this.logout}>
                                 Log out!
                             </button>
@@ -133,8 +134,26 @@ export default class App extends Component {
                                     onBioUpdate={this.onBioUpdate}
                                 />
                             </Route>
+                            <Route path="/profile" exact>
+                                <Profile
+                                    firstname={this.state.firstname}
+                                    lastname={this.state.lastname}
+                                    bio={this.state.bio}
+                                    profile_picture_url={
+                                        this.state.profile_picture_url
+                                    }
+                                    onUpload={this.onUpload}
+                                    closeModal={this.closeModal}
+                                    onProfileClick={this.onProfileClick}
+                                    showModal={this.showModal}
+                                    onBioUpdate={this.onBioUpdate}
+                                />
+                            </Route>
                             <Route path="/user/:otherUserId">
                                 <OtherProfile />
+                            </Route>
+                            <Route path="/friends">
+                                <Friends />
                             </Route>
                         </main>
                         <footer> &#9875; Bul-bul 2022</footer>

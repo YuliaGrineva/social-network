@@ -1,20 +1,50 @@
 const spicedPg = require("spiced-pg");
 
-// const cryptoRandomString = require("crypto-random-string");
-// const secretCode = cryptoRandomString({
-//     length: 6,
-// });
+function sendEmailWithCode({ email, code }) {
+    console.log("[social:email] sending email with code", email, code);
+    // here you'll put the SES stuff
+}
 
-// function sendEmailWithCode({ email, code }) {
-//     console.log("[social:email] sending email with code", email, code);
-//     // here you'll put the SES stuff
-// }
+function getCode(code) {
+    const query = `
+    SELECT * FROM passwordReset 
+    WHERE code = $1
+    `;
+    const params = [code];
+    return db.query(query, params);
+}
 
-// function getCode(code){}
+function updatePasswordByUserEmail({ email, password }) {
+    console.log("email", email);
+    return hashPassword(password).then((password_hash) => {
+        const query = `
+        UPDATE users 
+        SET password_hash = $2 
+        WHERE email = $1
+        RETURNING *
+`;
+        const params = [email, password_hash];
+        return db.query(query, params);
+    });
+}
 
-// function updatePassword(password, email){}
+function createResetPasswordCode({ code, email }) {
+    console.log("USE THIS CODE", code);
+    const query = `
+    INSERT INTO passwordReset (code, email)
+    VALUES ($1, $2)
+    RETURNING *`;
+    const params = [code, email];
+    return db.query(query, params).then((result) => result.rows[0]);
+}
 
-// function createPasswordResetCode(code, email) {}
+module.exports = {
+    updatePasswordByUserEmail,
+    getCode,
+    createResetPasswordCode,
+    sendEmailWithCode,
+    getUserByEmail,
+};
 
 var dbUrl =
     process.env.DATABASE_URL ||
@@ -43,18 +73,23 @@ module.exports.addUser = ({ firstname, lastname, email, password }) => {
 module.exports.checkLogin = ({ email, password }) => {
     return getUserByEmail(email).then((result) => {
         const foundUser = result.rows[0];
-        console.log("HERE", foundUser);
+        console.log("HERE FOUNDUSER", foundUser, !foundUser);
         if (!foundUser) {
+            console.log("HERE NULLLL");
             return null;
         }
         return bcrypt
             .compare(password, foundUser.password_hash)
             .then(function (match) {
-                if (match) {
-                    return foundUser;
-                } else {
+                console.log("match !!!!!", match);
+                console.log("foundUser !!!!!", foundUser);
+                
+                if (!match) {
                     return null;
                 }
+                console.log("foundUserrrRRRR", foundUser);
+                return foundUser;
+           
             });
     });
 };
@@ -99,12 +134,12 @@ module.exports.updateUserBio = (bio, id) => {
 module.exports.mostRecent = (id) => {
     const query = `
         SELECT firstname, lastname ,profile_picture_url, id FROM users
-
+        WHERE id <> $1
         ORDER BY id DESC 
         LIMIT 3;
     `;
-
-    return db.query(query);
+    const params = [id];
+    return db.query(query, params);
 };
 
 module.exports.matchingUsers = (val) => {
@@ -139,9 +174,9 @@ module.exports.requestFriend = (recipient_id, sender_id) => {
   RETURNING *
     `;
     const params = [recipient_id, sender_id];
-    const request = db.query(query, params);
-
-    return request.rows[0];
+    const req = db.query(query, params);
+    console.log("RESULT DB", req);
+    return req;
 };
 
 module.exports.updateFriend = async (recipient_id, sender_id) => {
@@ -155,7 +190,7 @@ module.exports.updateFriend = async (recipient_id, sender_id) => {
     const params = [recipient_id, sender_id];
     const update = await db.query(query, params);
 
-    return update.rows[0];
+    return update.rows;
 };
 
 module.exports.deleteFriend = async (recipient_id, sender_id) => {
@@ -168,7 +203,7 @@ module.exports.deleteFriend = async (recipient_id, sender_id) => {
     const params = [recipient_id, sender_id];
     const deleted = await db.query(query, params);
 
-    return deleted.rows[0];
+    return deleted.rows;
 };
 
 module.exports.cancelRequest = async (recipient_id, sender_id) => {
@@ -182,5 +217,21 @@ module.exports.cancelRequest = async (recipient_id, sender_id) => {
     const params = [recipient_id, sender_id];
     const cancel = await db.query(query, params);
 
-    return cancel.rows[0];
+    return cancel.rows;
+};
+
+module.exports.getFriendsAndWannabes = async (userId) => {
+    const query = `
+    SELECT users.id, firstname, lastname, profile_picture_url, accepted
+  FROM friendships
+JOIN users
+ON (accepted = false AND recipient_id = $1 AND sender_id = users.id)
+ OR (accepted = true AND recipient_id = $1 AND sender_id = users.id)
+OR (accepted = true AND sender_id = $1 AND recipient_id = users.id)
+
+    `;
+    const params = [userId];
+    const friends = await db.query(query, params);
+
+    return friends;
 };

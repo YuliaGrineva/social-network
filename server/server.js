@@ -118,7 +118,7 @@ app.post("/friendships", (req, res) => {
             .then((rows) => {
                 console.log("results of request friend: ", rows);
 
-                res.json(rows);
+                res.json(rows[0]);
             })
             .catch((e) => console.log("error request friend: ", e));
     }
@@ -138,7 +138,7 @@ app.post("/friendships", (req, res) => {
             .then((rows) => {
                 console.log("results of cancelRequest: ", rows);
 
-                res.json(rows);
+                res.json(rows[0]);
             })
             .catch((e) => console.log("error cancelRequest ", e));
     }
@@ -228,21 +228,26 @@ app.post("/register", (req, res) => {
 
 app.post("/login", (req, res) => {
     console.log("POST request made to /login route");
+    console.log("BODYY", req.body);
+
     const { email, password } = req.body;
     console.log(email, password);
-
     if (!email || !password) {
         res.status(400).json({ error: "OOOPSI 1" });
         return;
     }
     db.checkLogin(req.body)
-        .then((user) => {
-            if (!user) {
-                res.status(400).json({ error: "OOOPSI 2" });
+        .then((foundUser) => {
+            console.log("USERRR", foundUser);
+            if (!foundUser.id) {
+                res.status(400).json({ error: "OOOPSI 222" });
                 return;
             }
-            req.session.userId = user.id;
+            // console.log("USERID", founduser.id);
+            req.session.userId = foundUser.id;
+
             res.json({ success: true });
+            console.log("res.json", res.json());
         })
         .catch((error) => {
             console.log(error);
@@ -252,24 +257,75 @@ app.post("/login", (req, res) => {
         });
 });
 
-// app.post("/api/password", (req, res) => {
-//     // remember to check if the email is present in the request.body!
+app.post("/api/password", (req, res) => {
+    const code = cryptoRandomString({ length: 6 });
+    const { email } = req.body;
 
-//     const code = db.cryptoRandomString({ length: 6 });
+    if (!email) {
+        res.status(400).json({
+            message: "email missing",
+        });
+        return;
+    }
 
-//     db.createPasswordResetCode({ email, code }).then(() => {
-//         db.sendEmailWithCode({ email, code });
-//         res.json({ message: "ok" });
-//     });
-// });
+    db.getUserByEmail(email).then((user) => {
+        console.log("do you see me?", user);
+        if (!user) {
+            res.status(400).json({
+                message: "no user found",
+            });
+            return;
+        }
+        db.createResetPasswordCode({ email, code }).then(() => {
+            db.sendEmailWithCode({ code, email });
+            res.json({ message: "CODE SENT" });
+        });
+    });
+});
 
-// app.put("/api/password", (req, res) => {});
+app.put("/api/password", (req, res) => {
+    console.log("req.body in reset", req.body);
+    const { code, password } = req.body;
+    db.getCode(code).then((data) => {
+        console.log("DATAAA", data);
+        if (!data) {
+            res.status(400).json({
+                message: "WRONG CODE",
+            });
+            return;
+        }
+
+        db.updatePasswordByUserEmail({
+            email: data.rows[0].email,
+            password,
+        }).then(() => {
+            res.json({
+                message: "OK",
+            });
+        });
+    });
+});
 
 app.post("/logout", function (req, res) {
     // res.render("login");
     console.log("LOGGING OUT USER");
     req.session = null;
+    res.json({ success: true });
 });
+
+app.get("/friendsAndWannabes", function (req, res) {
+    console.log("RESUULTSS YULIAAAA");
+    let { userId } = req.session;
+
+    db.getFriendsAndWannabes(userId).then((results) => {
+        console.log("RESUULTSS YULIAAAA", results.rows);
+        res.json(results.rows);
+    });
+});
+
+app.post("/friendship/accept", function (req, res) {});
+
+app.post("/friendship/unfriend", function (req, res) {});
 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));

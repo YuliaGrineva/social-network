@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
+// import ResetPassword from "./resetPassword";
 // import App from "./app";
 
 export class Login extends Component {
@@ -44,7 +45,7 @@ export class Login extends Component {
                         error: true,
                     });
                 } else {
-                    location.replace("/");
+                    location.replace("/profile");
                 }
             })
             .catch((err) => {
@@ -76,6 +77,7 @@ export class Login extends Component {
                 <p>
                     Not a member? <Link to="/">Create new account!</Link>
                 </p>
+               
                 <Link to="/resetPassword">Reset password</Link>
             </section>
         );

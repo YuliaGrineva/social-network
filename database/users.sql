@@ -36,3 +36,5 @@ CREATE TABLE friendships (
     recipient_id     INT REFERENCES users(id) NOT NULL,
     accepted boolean DEFAULT false
 );
+
+

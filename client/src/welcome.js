@@ -2,9 +2,9 @@ import { Login } from "./login";
 import Registration from "./registration";
 import { BrowserRouter, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
-import {FindPeople} from "./findPeople";
+import { FindPeople } from "./findPeople";
 import OtherProfile from "./otherProfile";
-// import { ResetPassword } from "./resetPassword";
+import  ResetPassword from "./resetPassword";
 
 export default function Welcome() {
     return (
@@ -15,7 +15,7 @@ export default function Welcome() {
             <img className="bubble" src="/bub.png" />
             <img className="bubble2" src="/bub.png" />
             <img className="bubble3" src="/bub.png" />
-            
+
             <BrowserRouter>
                 <Route id="regrouter" exact path="/">
                     <Registration />
@@ -25,6 +25,15 @@ export default function Welcome() {
                 </Route>
                 <Route path="/login">
                     <Login />
+                </Route>
+                <Route path="/resetPassword">
+                    <ResetPassword
+                        // id={this.state.id}
+                        // email={this.state.email}
+                        // onSubmitStepOne={this.onSubmitStepOne}
+                        // onSubmitStepTwo={this.onSubmitStepTwo}
+                        // onInput={this.onInput}
+                    />
                 </Route>
 
                 {/* <Route path="/reset-password">
