@@ -323,9 +323,33 @@ app.get("/friendsAndWannabes", function (req, res) {
     });
 });
 
-app.post("/friendship/accept", function (req, res) {});
+app.post("/friendship/accepted/:otherUserId", function (req, res) {
+    const sender_id = req.session.userId;
+    const recipient_id = req.params.otherUserId;
 
-app.post("/friendship/unfriend", function (req, res) {});
+    db.updateFriend(recipient_id, sender_id)
+        .then((rows) => {
+            console.log("results of accept friend in slice!!!!!!: ", rows);
+
+            res.json(rows);
+            
+        })
+        .catch((e) => console.log("error accept friend in slice!!!!!!: ", e));
+});
+
+app.post("/friendship/unfriended/:otherUserId", function (req, res) {
+    const sender_id = req.session.userId;
+    const recipient_id = req.params.otherUserId;
+
+    db.deleteFriend(recipient_id, sender_id)
+        .then((rows) => {
+            console.log("results of deleteFriend friend: ", rows);
+
+            res.json(rows);
+        })
+        .catch((e) => console.log("error deleteFriend: ", e));
+
+});
 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));

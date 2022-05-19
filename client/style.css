@@ -35,6 +35,11 @@ h1 {
     margin-top: 0;
     font-weight: bold;
     font-family: klavika-web, sans-serif;
+ 
+}
+
+a {
+   text-decoration: none;
 }
 
 footer {
@@ -187,25 +192,26 @@ header{
 }
 
 .bubble {
-    height: 80px;
-    position: relative;
+    height: 100px;
+    position: fixed;
     top: 100px;
     left: 150px;
 }
 
 .bubble2 {
-    height: 100px;
-    position: relative;
+    height: 344px;
+    position: fixed;
     top: 300px;
-    left: 719px;
+    left: 652px;
+    z-index: 10;
 }
 
 .bubble3 {
-    height: 100px;
-    width: 80px;
-    position: relative;
+      height: 151px;
+    /* width: 80px; */
+    position: fixed;
     top: -25px;
-    left: 462px;
+    left: 880px;
 }
 
 #modal {
@@ -229,6 +235,7 @@ header{
 
 .container {
     padding: 80px;
+        min-height: 80vh;
 }
 
 #logoutButton {
@@ -255,7 +262,23 @@ button {
 }
 
 #thisUser {
-        border-bottom: solid #397392;
-    width: 400px;
+        /* border-bottom: solid #397392; */
+    width: 270px;
     margin-bottom: 30px;
+}
+
+#friends{
+        /* border-bottom: dotted 3px; */
+    text-align: center;
+    padding: 3px;
+}
+
+#friends-container {
+   display: flex;
+
+}
+
+#reset{
+        padding-left: 80px;
+        padding-top: 40px;
 }

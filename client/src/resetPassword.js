@@ -79,7 +79,7 @@ export default class ResetPassword extends Component {
 
     renderStepOne() {
         return (
-            <form onSubmit={this.onSubmitStepOne}>
+            <form id="reset" onSubmit={this.onSubmitStepOne}>
                 <h3>Reset password</h3>
                 <h4>
                     Please, enter the email adress whith which you registered
@@ -90,6 +90,8 @@ export default class ResetPassword extends Component {
                     required
                     placeholder="Email"
                     onInput={this.onInput}
+                    key="email"
+                    
                 />
                 <button>Send code</button>
             </form>
@@ -97,7 +99,7 @@ export default class ResetPassword extends Component {
     }
     renderStepTwo() {
         return (
-            <form onSubmit={this.onSubmitStepTwo}>
+            <form id="reset" onSubmit={this.onSubmitStepTwo}>
                 <h3>Reset password</h3>
                 <h4>Please, enter the code you received</h4>
                 <input
@@ -107,6 +109,7 @@ export default class ResetPassword extends Component {
                     placeholder="Code"
                     required
                     autoComplete="off"
+                    key="code"
                 />
                 <h4>Please, enter a new password</h4>
                 <input
@@ -123,9 +126,9 @@ export default class ResetPassword extends Component {
     }
     renderStepThree() {
         return (
-            <div>
+            <div id="reset">
                 <h2>Your password has been changed!</h2>
-                <p>
+                <p style="text-align: center">
                     You can now <Link to="/login">log in</Link> with your new
                     password.
                 </p>
