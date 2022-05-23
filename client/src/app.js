@@ -8,6 +8,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import OtherProfile from "./otherProfile";
 import ResetPassword from "./resetPassword";
 import Friends from "./friends";
+import Chat from "./chat";
 
 export default class App extends Component {
     constructor(props) {
@@ -85,6 +86,7 @@ export default class App extends Component {
                                 Welcome {this.state.firstname}{" "}
                                 {this.state.lastname}!
                             </h2>
+                            <img className="bubble3" src="/bub.png" />
 
                             <ProfilePicture
                                 profile_picture_url={
@@ -100,6 +102,9 @@ export default class App extends Component {
                                     Find you fish!
                                 </button>
                             </Link>
+                            <Link to="/chat">
+                                <button id="logoutButton">Chat</button>
+                            </Link>
                             <Link to="/friends">
                                 <button id="logoutButton">Friends</button>
                             </Link>
@@ -107,10 +112,10 @@ export default class App extends Component {
                                 Log out!
                             </button>
                         </div>
+
                         <main className="container">
                             <Route path="/findPeople">
                                 <FindPeople
-                                    path="/findPeople"
                                     firstname={this.state.firstname}
                                     lastname={this.state.lastname}
                                     profile_picture_url={
@@ -154,6 +159,9 @@ export default class App extends Component {
                             </Route>
                             <Route path="/friends">
                                 <Friends />
+                            </Route>
+                            <Route path="/chat">
+                                <Chat />
                             </Route>
                         </main>
                         <footer> &#9875; Bul-bul 2022</footer>

@@ -1,18 +1,12 @@
 export function friendsAndWannabesReducer(friendsAndWannabes = [], action) {
     // Your Logic Goes Here
     if (action.type == "friendsAndWannabes/receivedFriendsAndWannabes") {
-        friendsAndWannabes = [
-            ...friendsAndWannabes,
-            ...action.payload.friendsAndWannabes,
-        ];
-        console.log("LALAL", action.payload.friendsAndWannabes);
+        friendsAndWannabes = [...action.payload.friendsAndWannabes];
     } else if (action.type === "friendsAndWannabes/unfriend") {
-        console.log("Action dot payload jujuj", action.payload);
         friendsAndWannabes = friendsAndWannabes.filter((item) => {
             return item.id !== action.payload.id;
         });
     } else if (action.type === "friendsAndWannabes/accept") {
-        console.log("Action dot payload accept", action.payload);
         friendsAndWannabes = friendsAndWannabes.map((item) => {
             if (item.id === action.payload.id) {
                 // object property accepted auf true danach return item
@@ -27,7 +21,6 @@ export function friendsAndWannabesReducer(friendsAndWannabes = [], action) {
         });
     }
 
-    console.log("friendsAndWannabes1111", friendsAndWannabes);
     return friendsAndWannabes;
 }
 // ACTION CREATORS -----------------------------------

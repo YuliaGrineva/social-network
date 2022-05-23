@@ -83,13 +83,12 @@ module.exports.checkLogin = ({ email, password }) => {
             .then(function (match) {
                 console.log("match !!!!!", match);
                 console.log("foundUser !!!!!", foundUser);
-                
+
                 if (!match) {
                     return null;
                 }
-                console.log("foundUserrrRRRR", foundUser);
+                console.log("foundUser", foundUser);
                 return foundUser;
-           
             });
     });
 };
@@ -234,4 +233,31 @@ OR (accepted = true AND sender_id = $1 AND recipient_id = users.id)
     const friends = await db.query(query, params);
 
     return friends;
+};
+
+module.exports.getMessages = async () => {
+    const query = `
+    SELECT chat.*, users.firstname, users.lastname, users.profile_picture_url
+    FROM chat
+    JOIN users
+    ON users.id = chat.sender_id
+    ORDER BY chat.created_at DESC
+    `;
+
+    const allMessages = await db.query(query);
+
+    return allMessages.rows;
+};
+
+module.exports.createMessage = async ({ sender_id, text }) => {
+    const query = `
+    INSERT INTO chat
+       (sender_id, text)
+  VALUES($1, $2)
+  RETURNING *
+    `;
+    const params = [sender_id, text];
+    const message = await db.query(query, params);
+
+    return message.rows[0];
 };

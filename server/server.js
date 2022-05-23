@@ -8,6 +8,8 @@ const cryptoRandomString = require("crypto-random-string");
 const s3 = require("./s3");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
+const { Server } = require("http");
+const server = Server(app);
 
 app.use(compression());
 
@@ -15,13 +17,20 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
-app.use(
-    cookieSession({
-        secret: `I'm always angry.`,
-        maxAge: 1000 * 60 * 60 * 24 * 14,
-        sameSite: true,
-    })
-);
+// app.use(
+//     cookieSession({
+//         secret: `I'm always angry.`,
+//         maxAge: 1000 * 60 * 60 * 24 * 14,
+//         sameSite: true,
+//     })
+// );
+
+const cookieSessionMiddleware = cookieSession({
+    secret: "...",
+    maxAge: 1000 * 60 * 60 * 24 * 14,
+    sameSite: true,
+});
+app.use(cookieSessionMiddleware);
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -332,7 +341,6 @@ app.post("/friendship/accepted/:otherUserId", function (req, res) {
             console.log("results of accept friend in slice!!!!!!: ", rows);
 
             res.json(rows);
-            
         })
         .catch((e) => console.log("error accept friend in slice!!!!!!: ", e));
 });
@@ -348,13 +356,55 @@ app.post("/friendship/unfriended/:otherUserId", function (req, res) {
             res.json(rows);
         })
         .catch((e) => console.log("error deleteFriend: ", e));
-
 });
+
+// ---- > socket < ---- //
+
+const io = require("socket.io")(server, {
+    allowRequest: (request, callback) =>
+        callback(
+            null,
+            request.headers.referer.startsWith(`http://localhost:3000`)
+        ),
+});
+io.use((socket, next) =>
+    cookieSessionMiddleware(socket.request, socket.request.res, next)
+);
+
+io.on("connection", async (socket) => {
+    // you can now access the session via socket as well
+    const userId = socket.request.session.userId;
+    const chatMessages = await db.getMessages();
+    socket.emit("chatMessages", chatMessages);
+    console.log("chatMessages!!!!!", chatMessages);
+
+    // store new message in DB and then send new message to chat
+    socket.on("sendMessage", async (text) => {
+        const sender = await db.getUserById(userId);
+        console.log("HEREE text", text);
+        const message = await db.createMessage({
+            sender_id: userId,
+            text: text,
+        });
+        console.log("<!!!!!!!!", sender);
+        io.emit("newMessage", {
+            firstname: sender.rows[0].firstname,
+            lastname: sender.rows[0].lastname,
+            profile_picture_url: sender.rows[0].profile_picture_url,
+            ...message,
+        });
+    });
+});
+
+// not app.listen!
 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
-app.listen(process.env.PORT || 3001, function () {
+server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
 });
+// app.listen(process.env.PORT || 3001, function () {
+//     console.log("I'm listening.");
+// });

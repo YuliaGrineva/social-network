@@ -128,7 +128,7 @@ export default class ResetPassword extends Component {
         return (
             <div id="reset">
                 <h2>Your password has been changed!</h2>
-                <p style="text-align: center">
+                <p >
                     You can now <Link to="/login">log in</Link> with your new
                     password.
                 </p>
