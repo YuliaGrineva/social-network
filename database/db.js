@@ -141,6 +141,22 @@ module.exports.mostRecent = (id) => {
     return db.query(query, params);
 };
 
+module.exports.mutualFriends = (userId, otherUserId) => {
+    const query = `
+SELECT DISTINCT users.id, users.firstname, users.lastname, users.profile_picture_url, friendships.accepted
+ FROM friendships
+ INNER JOIN users
+ON ((recipient_id = $1 OR recipient_id = $2) AND sender_id = users.id)
+OR ((sender_id = $1 OR sender_id = $2) AND recipient_id = users.id)
+WHERE accepted = TRUE and users.id <> $1 AND users.id <> $2;
+    `;
+    const params = [userId, otherUserId];
+    console.log("result TATATTATATAATTA");
+    return db.query(query, params);
+    // console.log("result TATATTATATAATTA", result);
+    // return result.rows;
+};
+
 module.exports.matchingUsers = (val) => {
     const query = `
         SELECT firstname, lastname ,profile_picture_url, id

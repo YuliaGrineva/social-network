@@ -71,6 +71,19 @@ app.get("/api/findusers/:search", (req, res) => {
         .catch((e) => console.log("error uploading!!!: ", e));
 });
 
+app.get("/api/mutualFriends/:otherUserId", (req, res) => {
+    const { userId } = req.session;
+    const otherUserId = req.params.otherUserId;
+    console.log("userId,  ", userId, otherUserId);
+    db.mutualFriends(userId, otherUserId)
+        .then((results) => {
+            console.log("results of mutualFriends: ", results);
+
+            res.json(results);
+        })
+        .catch((e) => console.log("error uploading mutualFriends: ", e));
+});
+
 app.get("/api/recentUsers", (req, res) => {
     console.log("no searcH");
     const sessionId = req.session.userId;
@@ -376,7 +389,6 @@ io.on("connection", async (socket) => {
     const userId = socket.request.session.userId;
     const chatMessages = await db.getMessages();
     socket.emit("chatMessages", chatMessages);
-    console.log("chatMessages!!!!!", chatMessages);
 
     // store new message in DB and then send new message to chat
     socket.on("sendMessage", async (text) => {
@@ -386,7 +398,7 @@ io.on("connection", async (socket) => {
             sender_id: userId,
             text: text,
         });
-        console.log("<!!!!!!!!", sender);
+
         io.emit("newMessage", {
             firstname: sender.rows[0].firstname,
             lastname: sender.rows[0].lastname,

@@ -1,7 +1,6 @@
 body {
     /* background-color: rgb(167, 167, 220); */
-    background-color: 
-    rgb(18 112 154 / 62%);
+    background-color: rgb(18 112 154 / 62%);
     /* rgb(200 152 176); */
     font-family: Lucida Grande;
     margin: 0;
@@ -35,35 +34,33 @@ h1 {
     margin-top: 0;
     font-weight: bold;
     font-family: klavika-web, sans-serif;
- 
 }
 
 a {
-   text-decoration: none;
+    text-decoration: none;
 }
 
 footer {
-        /* position: absolute; */
+    /* position: absolute; */
     /* bottom: 5px; */
     /* right: 10px; */
     font-size: 12px;
     font-weight: bold;
     float: right;
-    margin-right: 15px;
-
+    margin-right: 25px;
 }
 
-    /* position: absolute;
+/* position: absolute;
     bottom: 5px;
     /* right: 10px; */
-    /* font-size: 12px;
+/* font-size: 12px;
     font-weight: bold;
     color: white;
     background-color: rgb(58 122 151);
     width: 100%;
     margin-bottom: -5px;
     padding: 10px;
-    text-align: right; */ 
+    text-align: right; */
 
 #registration,
 #loginPage {
@@ -129,8 +126,8 @@ img.profile-pic.header {
     float: right;
     border-radius: 50%;
     object-fit: fill;
-    margin-right: 30px;
-     margin-top: 20px;
+    margin-right: 40px;
+    margin-top: 20px;
 }
 img.profile-pic.main {
     height: 300px;
@@ -138,14 +135,14 @@ img.profile-pic.main {
     object-fit: contain;
 }
 
-header{
+header {
     height: 110px;
     width: 100%;
     background-color: #3a7a97;
-        display: flex;
+    display: flex;
     justify-content: space-between;
     align-items: baseline;
-    }
+}
 
 #profile {
     display: flex;
@@ -154,7 +151,7 @@ header{
     align-items: center;
 }
 
-#picname{
+#picname {
     display: flex;
     flex-direction: column;
 }
@@ -165,7 +162,8 @@ header{
     margin: 10px;
 }
 
-#editor, #ppp {
+#editor,
+#ppp {
     margin: 10px;
 }
 
@@ -203,19 +201,20 @@ header{
     position: fixed;
     top: 300px;
     left: 652px;
-    z-index: 10;
+    z-index: 0;
 }
 
 .bubble3 {
-      height: 151px;
+    height: 151px;
     /* width: 80px; */
     position: fixed;
     top: -25px;
     left: 880px;
+    z-index: 1;
 }
 
 #modal {
-      height: 150px;
+    height: 150px;
     position: absolute;
     top: 20%;
     left: 50%;
@@ -224,22 +223,20 @@ header{
     border-radius: 10px;
 }
 #logo1 {
-    
-        height: 70px;
-    
+    height: 70px;
+
     margin-left: 30px;
-  
+
     border: solid 0.5px white;
     border-radius: 50%;
 }
 
 .container {
     padding: 80px;
-        min-height: 80vh;
+    min-height: 85vh;
 }
 
 #logoutButton {
-  
     color: white;
     background-color: #879cad;
     padding: 5px;
@@ -251,34 +248,60 @@ header{
 }
 
 #buttons {
-     right: 10px;
-position: absolute;
+    right: 10px;
+    position: absolute;
     top: 120px;
-  
+    margin-right: 20px;
 }
 
 button {
     margin: 10px;
 }
 
-#thisUser {
-        /* border-bottom: solid #397392; */
+#thisUser1 {
+    /* border-bottom: solid #397392; */
     width: 270px;
     margin-bottom: 30px;
+    margin-right: 20px;;
+    display: inline-flex;
+    align-content: stretch;
+    justify-content: flex-start;
+    align-items: flex-end;
 }
 
-#friends{
-        /* border-bottom: dotted 3px; */
+#thisUser {
+    /* border-bottom: solid #397392; */
+    width: 270px;
+    margin-bottom: 30px;
+  
+    
+}
+
+
+#friends {
+    /* border-bottom: dotted 3px; */
     text-align: center;
     padding: 3px;
 }
 
 #friends-container {
-   display: flex;
-
+    display: flex;
 }
 
-#reset{
-        padding-left: 80px;
-        padding-top: 40px;
+#reset {
+    padding-left: 80px;
+    padding-top: 40px;
+}
+
+#other {
+    margin-top: 80px;
+    color: white;
+    border-top: #3a7a97 solid;
+    padding-top: 20px;
+}
+
+#otherImg {
+    height: 100px;
+    border-radius: 50%;
+    display: inline;
 }

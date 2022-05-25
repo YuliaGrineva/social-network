@@ -86,7 +86,6 @@ export default class App extends Component {
                                 Welcome {this.state.firstname}{" "}
                                 {this.state.lastname}!
                             </h2>
-                            <img className="bubble3" src="/bub.png" />
 
                             <ProfilePicture
                                 profile_picture_url={
@@ -160,9 +159,14 @@ export default class App extends Component {
                             <Route path="/friends">
                                 <Friends />
                             </Route>
+                            <Route path="/resetPassword">
+                                <ResetPassword />
+                            </Route>
                             <Route path="/chat">
                                 <Chat />
                             </Route>
+                            <img className="bubble2" src="/bub.png" />
+                            <img className="bubble3" src="/bub.png" />
                         </main>
                         <footer> &#9875; Bul-bul 2022</footer>
                         {this.state.showModal && (
