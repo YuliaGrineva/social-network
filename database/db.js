@@ -2,7 +2,7 @@ const spicedPg = require("spiced-pg");
 
 function sendEmailWithCode({ email, code }) {
     console.log("[social:email] sending email with code", email, code);
-    // here you'll put the SES stuff
+    // here put the SES stuff
 }
 
 function getCode(code) {
@@ -15,7 +15,6 @@ function getCode(code) {
 }
 
 function updatePasswordByUserEmail({ email, password }) {
-    console.log("email", email);
     return hashPassword(password).then((password_hash) => {
         const query = `
         UPDATE users 
@@ -29,7 +28,6 @@ function updatePasswordByUserEmail({ email, password }) {
 }
 
 function createResetPasswordCode({ code, email }) {
-    console.log("USE THIS CODE", code);
     const query = `
     INSERT INTO passwordReset (code, email)
     VALUES ($1, $2)
@@ -73,21 +71,15 @@ module.exports.addUser = ({ firstname, lastname, email, password }) => {
 module.exports.checkLogin = ({ email, password }) => {
     return getUserByEmail(email).then((result) => {
         const foundUser = result.rows[0];
-        console.log("HERE FOUNDUSER", foundUser, !foundUser);
         if (!foundUser) {
-            console.log("HERE NULLLL");
             return null;
         }
         return bcrypt
             .compare(password, foundUser.password_hash)
             .then(function (match) {
-                console.log("match !!!!!", match);
-                console.log("foundUser !!!!!", foundUser);
-
                 if (!match) {
                     return null;
                 }
-                console.log("foundUser", foundUser);
                 return foundUser;
             });
     });
@@ -151,10 +143,7 @@ OR ((sender_id = $1 OR sender_id = $2) AND recipient_id = users.id)
 WHERE accepted = TRUE and users.id <> $1 AND users.id <> $2;
     `;
     const params = [userId, otherUserId];
-    console.log("result TATATTATATAATTA");
     return db.query(query, params);
-    // console.log("result TATATTATATAATTA", result);
-    // return result.rows;
 };
 
 module.exports.matchingUsers = (val) => {
@@ -168,7 +157,6 @@ module.exports.matchingUsers = (val) => {
 };
 
 module.exports.getFriendshipStatus = async (recipient_id, sender_id) => {
-    console.log("HEREEE", recipient_id, sender_id);
     const query = `
        SELECT * FROM friendships
   WHERE (recipient_id = $1 AND sender_id = $2)
@@ -176,12 +164,10 @@ module.exports.getFriendshipStatus = async (recipient_id, sender_id) => {
     `;
     const params = [recipient_id, sender_id];
     const status = await db.query(query, params);
-    console.log("status", status);
     return status.rows[0];
 };
 
 module.exports.requestFriend = (recipient_id, sender_id) => {
-    console.log("HEREEE", recipient_id, sender_id);
     const query = `
        INSERT INTO friendships
        (recipient_id, sender_id)
@@ -190,7 +176,6 @@ module.exports.requestFriend = (recipient_id, sender_id) => {
     `;
     const params = [recipient_id, sender_id];
     const req = db.query(query, params);
-    console.log("RESULT DB", req);
     return req;
 };
 
