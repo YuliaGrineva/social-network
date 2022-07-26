@@ -3,12 +3,6 @@ import BioEditor from "./bioEditor";
 
 
 export default function Profile(props) {
-    console.log("PROPS", props);
-    //     props:
-    //         // the user info needed to be displayed
-    //         // a function to be called when the bio is updated
-    //     }
-    //  {
     return (
         <section>
             <h3>Your profile</h3>

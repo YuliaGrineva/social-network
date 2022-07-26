@@ -14,7 +14,6 @@ export default function Friends() {
         fetch("/friendsAndWannabes")
             .then((res) => res.json())
             .then((data) => {
-                console.log("friendsAndWannabes", data);
                 dispatch(receiveFriendsAndWannabes(data));
             });
     }, []);
@@ -44,14 +43,6 @@ export default function Friends() {
         let action = accept(id);
         dispatch(action);
     }
-
-    // const requests = useSelector((state) =>
-    //     state.contacts.filter((user) => !user.accepted)
-    // );
-
-    // if (!friends) {
-    //     return null;
-    // }
 
     return (
         <section>

@@ -19,7 +19,6 @@ fetch("/user/id.json")
     .then((res) => res.json())
 
     .then((data) => {
-        console.log("PRESSS", data);
         if (!data.userId) {
             ReactDOM.render(<Welcome />, document.querySelector("main"));
         } else {

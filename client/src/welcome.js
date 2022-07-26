@@ -31,18 +31,8 @@ export default function Welcome() {
                     <Login />
                 </Route>
                 <Route path="/resetPassword">
-                    <ResetPassword
-                    // id={this.state.id}
-                    // email={this.state.email}
-                    // onSubmitStepOne={this.onSubmitStepOne}
-                    // onSubmitStepTwo={this.onSubmitStepTwo}
-                    // onInput={this.onInput}
-                    />
+                    <ResetPassword/>
                 </Route>
-
-                {/* <Route path="/reset-password">
-                    import FindPeople from "./findPeople";
-                </Route> */}
             </BrowserRouter>
         </section>
     );

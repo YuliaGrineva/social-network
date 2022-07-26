@@ -71,7 +71,7 @@ export default class App extends Component {
     }
     render() {
         return (
-            console.log("Hello World", this.state),
+
             (
                 <BrowserRouter>
                     <div className="app">

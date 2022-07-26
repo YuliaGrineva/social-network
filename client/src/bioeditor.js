@@ -2,7 +2,7 @@ import { Component } from "react";
 
 export default class BioEditor extends Component {
     constructor(props) {
-        console.log("BIO", props);
+        
         super(props);
 
         this.state = {
@@ -15,9 +15,9 @@ export default class BioEditor extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-        console.log("NEW BIO", e.target.bio);
+        
         const newBio = e.target.bio.value;
-        console.log("NEW BIO", newBio);
+     
         fetch("/api/users/bio", {
             method: "POST",
             body: JSON.stringify({ bio: newBio }),
@@ -28,10 +28,6 @@ export default class BioEditor extends Component {
             .then((res) => res.json())
 
             .then((data) => {
-                console.log("IS IT", data);
-
-                // von app
-                // this.props.onBioUpdate(newBio);
                 this.props.onBioUpdate(data.bio);
                 this.setState({ isEditing: false });
             });
@@ -41,9 +37,6 @@ export default class BioEditor extends Component {
     }
 
     render() {
-       
-
-        console.log("PROPS BIO", this.props.bio);
 
         if (!this.props.bio && !this.state.isEditing) {
             return <button onClick={this.showEditor}>Tell about you</button>;

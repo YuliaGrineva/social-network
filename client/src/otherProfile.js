@@ -17,23 +17,17 @@ export default function OtherProfile() {
             .then((data) => {
                 setUser(data);
             });
-        // if (!abort) {
-
-        //     if (+otherUserId === isOwnProfile) {
-        //         history.push("/");
-        //     }
-        // }
+        
         return () => {
             abort = true;
         };
     }, [otherUserId]);
-   
 
     useEffect(() => {
         fetch(`/api/mutualFriends/` + otherUserId)
             .then((res) => res.json())
             .then((mutualFriend) => {
-                console.log("MutualFriend !!", mutualFriend);
+                
                 setMutualFriends(mutualFriend.rows);
             });
     }, [otherUserId]);
@@ -62,7 +56,7 @@ export default function OtherProfile() {
             </div>
             <FriendsButton otherUserId={otherUserId} />
 
-            {/* friendsButtonUpdate={user.friendsButtonUpdate} */}
+            
             <div>
                 <h4 id="other">Other fishes you both know</h4>
                 {mutualFriend &&

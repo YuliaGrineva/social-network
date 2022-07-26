@@ -4,7 +4,6 @@ export default class UploadPictureModal extends Component {
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
-        console.log("THIS PROPS inside uploadPictureModal", this.props);
     }
 
     onSubmit(e) {

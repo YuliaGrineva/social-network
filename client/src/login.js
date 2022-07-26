@@ -1,7 +1,5 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
-// import ResetPassword from "./resetPassword";
-// import App from "./app";
 
 export class Login extends Component {
     constructor() {
@@ -24,12 +22,7 @@ export class Login extends Component {
     }
 
     handleSubmit(e) {
-        // if (!this.state) {
-        //     console.log("NOOOO");
-        //     this.setState({ error: true });
-        // }
         e.preventDefault();
-        console.log("user try to log inn");
         fetch("/login", {
             method: "POST",
             headers: {
@@ -39,7 +32,6 @@ export class Login extends Component {
         })
             .then((res) => res.json())
             .then((result) => {
-                console.log("result", result);
                 if (!result.success) {
                     this.setState({
                         error: true,

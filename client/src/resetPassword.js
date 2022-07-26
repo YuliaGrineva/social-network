@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default class ResetPassword extends Component {
     constructor(props) {
-        console.log("props", props);
+
         super(props);
         this.state = {
             email: "",
@@ -14,7 +14,6 @@ export default class ResetPassword extends Component {
         this.onInput = this.onInput.bind(this);
     }
     onInput(event) {
-        console.log("onInput", event.target.name, event.target.value);
         this.setState({
             [event.target.name]: event.target.value,
         });
@@ -33,7 +32,6 @@ export default class ResetPassword extends Component {
             
         })
             .then((response) => {
-                console.log("response.status", response.status);
                 if (response.status >= 400) {
                     this.setState({
                         error: "Missing fields",
@@ -41,14 +39,12 @@ export default class ResetPassword extends Component {
                     return;
                 }
                 return response.json().then((data) => {
-                    console.log("data1", data);
                     this.setState({
                         step: 2,
                     });
                 });
             })
             .then((data) => {
-                console.log("datatata", data);
             })
             .catch((err) => {
                 console.log(err);
@@ -56,7 +52,6 @@ export default class ResetPassword extends Component {
     }
     onSubmitStepTwo(event) {
         event.preventDefault();
-        console.log("step two");
         fetch("/api/password", {
             method: "PUT",
             headers: {
@@ -66,7 +61,6 @@ export default class ResetPassword extends Component {
         })
             .then((res) => {
                 return res.json().then((data) => {
-                    console.log("data2", data);
                     this.setState({
                         step: 3,
                     });

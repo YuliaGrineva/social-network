@@ -13,7 +13,6 @@ export default function FriendsButton({ otherUserId }) {
             }
             const accepted = friendShipStatus.accepted;
             const incoming = friendShipStatus.sender_id == otherUserId;
-            console.log({ accepted, incoming });
             if (accepted) {
                 setBtnText("Unfriend");
                 return;
@@ -31,7 +30,6 @@ export default function FriendsButton({ otherUserId }) {
 
     function handleClick(e) {
         e.preventDefault();
-        console.log();
 
         fetch("/friendships", {
             method: "POST",
@@ -55,7 +53,6 @@ export default function FriendsButton({ otherUserId }) {
             if (btnText === "Cancel Request") {
                 setBtnText("Make Request");
             }
-            console.log();
         });
     }
 

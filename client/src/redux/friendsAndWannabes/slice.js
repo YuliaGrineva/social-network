@@ -1,5 +1,5 @@
 export function friendsAndWannabesReducer(friendsAndWannabes = [], action) {
-    // Your Logic Goes Here
+   
     if (action.type == "friendsAndWannabes/receivedFriendsAndWannabes") {
         friendsAndWannabes = [...action.payload.friendsAndWannabes];
     } else if (action.type === "friendsAndWannabes/unfriend") {
@@ -9,7 +9,7 @@ export function friendsAndWannabesReducer(friendsAndWannabes = [], action) {
     } else if (action.type === "friendsAndWannabes/accept") {
         friendsAndWannabes = friendsAndWannabes.map((item) => {
             if (item.id === action.payload.id) {
-                // object property accepted auf true danach return item
+                
                 const copyItem = {
                     ...item,
                     accepted: true,
@@ -23,8 +23,7 @@ export function friendsAndWannabesReducer(friendsAndWannabes = [], action) {
 
     return friendsAndWannabes;
 }
-// ACTION CREATORS -----------------------------------
-// Your action creators go here
+
 export function receiveFriendsAndWannabes(friendsAndWannabes) {
     console.log("data in slice", friendsAndWannabes);
     return {
