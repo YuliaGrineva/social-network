@@ -1,0 +1,3 @@
+# social-network
+Fishbook: facebook for fishes. <p>
+Building reusable components with React improved code readability and development time, while adding Redux for app state-management cut loading time by 50%. Custom build login page ensures user’s privacy by encrypting their password with bcrypt. <br> Backend and API written with NodeJS/Express utilises JSON and AJAX. Chat feature uses Sockets.io, built on top of WebSockets, to allow real-time event driven message exchange and status visibility. Data storage and retrieval is shared between PostgresSQL database (for user details and chat) and Amazon S3, for fast and reliable storage of large data items like images.
